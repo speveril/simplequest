@@ -2,6 +2,7 @@ import * as Cozy from 'Cozy';
 import * as RPG from '../../lotus/core/Lotus';
 
 import * as Menu from './menus/all';
+import { System as SoloFrontView } from '../../lotus/core/battle/SoloFrontView/System';
 
 // /<reference path="Map.ts"/>
 // /<reference path="CreditsComponent.ts"/>
@@ -20,7 +21,7 @@ export var frame = RPG.frame;
 export function load() {
     return RPG.load({
         mainMenuClass:          Menu.Main,
-        battleSystem:           RPG.BattleSystem.SoloFrontView,
+        battleSystem:           SoloFrontView,
         battleSystemConfig: {
             fightMusic:             'battle',
             // fightSound:             'battle_start',
