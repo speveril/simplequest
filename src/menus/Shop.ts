@@ -1,7 +1,7 @@
 import * as Cozy from 'Cozy';
 import * as RPG from '../../../lotus/core/Lotus';
 
-import * as ItemComponent from './ItemComponent';
+import { ItemComponent } from './ItemComponent';
 
 export class ShopMenu extends RPG.Menu {
     priceMultiplier:number;
