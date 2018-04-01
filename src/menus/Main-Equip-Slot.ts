@@ -1,3 +1,6 @@
+import * as Cozy from 'Cozy';
+import * as RPG from '../../../lotus/core/Lotus';
+
 var slotDisplayNames = {
     "weapon": "WPN",
     "shield": "SHD",
@@ -5,43 +8,40 @@ var slotDisplayNames = {
     "accessory": "ACC"
 }
 
-module SimpleQuest {
-    export module Menu {
-        var html:string = `
-            <span class="slot-name"></span>
-            <span class="item-icon"></span>
-            <span class="item-name"></span>
-        `;
-        export class Main_EquipSlot extends Cozy.UiComponent {
-            character:RPG.Character;
-            slot:string;
+var html:string = `
+    <span class="slot-name"></span>
+    <span class="item-icon"></span>
+    <span class="item-name"></span>
+`;
 
-            constructor(character:RPG.Character, slot:string) {
-                super({ html: html, tag: 'li' });
-                this.element.classList.add('slot');
+export class Main_EquipSlot extends Cozy.UiComponent {
+    character:RPG.Character;
+    slot:string;
 
-                this.character = character;
-                this.slot = slot;
-                this.element.setAttribute('data-menu', 'slot');
-                this.element.setAttribute('data-value', this.slot)
+    constructor(character:RPG.Character, slot:string) {
+        super({ html: html, tag: 'li' });
+        this.element.classList.add('slot');
 
-                this.rerender();
-            }
+        this.character = character;
+        this.slot = slot;
+        this.element.setAttribute('data-menu', 'slot');
+        this.element.setAttribute('data-value', this.slot)
 
-            rerender() {
-                this.find('.slot-name').innerText = slotDisplayNames[this.slot];
+        this.rerender();
+    }
 
-                var item = this.character.equipped[this.slot] || null;
+    rerender() {
+        this.find('.slot-name').innerText = slotDisplayNames[this.slot];
 
-                if (item) {
-                    item.makeIcon(this.find('.item-icon'));
-                    this.find('.item-name').innerText = item.name;
-                } else {
-                    this.find('.item-icon').style.backgroundImage = '';
-                    this.find('.item-icon').style.backgroundPosition = '';
-                    this.find('.item-name').innerText = '';
-                }
-            }
+        var item = this.character.equipped[this.slot] || null;
+
+        if (item) {
+            item.makeIcon(this.find('.item-icon'));
+            this.find('.item-name').innerText = item.name;
+        } else {
+            this.find('.item-icon').style.backgroundImage = '';
+            this.find('.item-icon').style.backgroundPosition = '';
+            this.find('.item-name').innerText = '';
         }
     }
 }

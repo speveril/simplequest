@@ -20,14 +20,16 @@ export class Boot_Load extends RPG.Menu {
 
         var savedGames = RPG.SavedGame.getList();
 
-        _.each(savedGames, (game:RPG.SavedGame) => {
+        // _.each(savedGames, (game:RPG.SavedGame) => {
+        for (let game of savedGames) {
             this.addChild(new SavedGameComponent({
                 id: game.file.path,
                 img: game.data.image,
                 name: game.data.name,
                 time: game.file.stat().mtime.toLocaleString('en-GB')
             }), 'ul.selections');
-        });
+        }
+        // });
 
         this.setupSelections(this.find('ul.selections'));
     }

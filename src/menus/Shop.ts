@@ -103,13 +103,15 @@ class BuyMenu extends RPG.Menu {
     }
 
     updateEnabled() {
-        _.each(this.findAll('li.item'), (el:HTMLElement) => {
+        // _.each(this.findAll('li.item'), (el:HTMLElement) => {
+        for (let el of this.findAll('li.item')) {
             var item = RPG.Item.library[el.getAttribute('data-item')];
             el.setAttribute(
                 'data-menu',
                 item.price * this.priceMultiplier <= RPG.Party.money ? 'choose' : '@disabled'
             );
-        });
+        }
+        // });
     }
 
     setSelection(index:number) {
@@ -164,7 +166,7 @@ class SellMenu extends RPG.Menu {
                 price: price
             }));
 
-            var sellable = _.findIndex(stack, (item) => item.location === RPG.Party.inventory) !== -1;
+            var sellable = stack.findIndex((item) => item.location === RPG.Party.inventory) !== -1;
 
             el.element.setAttribute('data-item', stack[0].key);
             el.element.setAttribute('data-price', price.toString());
@@ -259,7 +261,8 @@ class ConfirmSellMenu extends RPG.Menu {
             this.find('.equipped-container').style.display = 'none';
             this.equipped = 0;
         } else {
-            this.equipped = _.reduce(this.stack, (n:number, item:RPG.Item) => n += (item.location === RPG.Party.inventory ? 0 : 1), 0);
+            // this.equipped = _.reduce(this.stack, (n:number, item:RPG.Item) => n += (item.location === RPG.Party.inventory ? 0 : 1), 0);
+            this.equipped = this.stack.reduce((n:number, item:RPG.Item) => n += (item.location === RPG.Party.inventory ? 0 : 1), 0);
         }
 
         this.count = 1;
@@ -303,12 +306,14 @@ class ConfirmSellMenu extends RPG.Menu {
         RPG.Party.money += this.price * this.count;
 
         var toSell = [];
-        _.times(this.count, (i:number) => {
+        // _.times(this.count, (i:number) => {
+        for (let i = 0; i < this.count; i++) {
             if (toSell.length >= this.count) return;
             if (this.stack[i].location === RPG.Party.inventory) {
                 toSell.push(this.stack[i]);
             }
-        });
+        }
+        // });
 
         RPG.Party.inventory.remove(toSell);
         RPG.Menu.pop();

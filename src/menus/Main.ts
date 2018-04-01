@@ -1,85 +1,84 @@
-///<reference path="Main-Status.ts"/>
-///<reference path="Main-Save.ts"/>
-///<reference path="Main-Items.ts"/>
-///<reference path="Main-Equip.ts"/>
-///<reference path="Main-Exit.ts"/>
+import * as Cozy from 'Cozy';
+import * as RPG from '../../../lotus/core/Lotus';
 
-module SimpleQuest {
-    export module Menu {
-        export class Main extends RPG.Menu {
-            statusPanel:Main_StatusPanel = null;
-            submenus:{ [key:string]:any };
+import { Main_StatusPanel } from './Main-Status';
+import { Main_SaveSubmenu } from './Main-Save';
+import { Main_ItemsSubmenu } from './Main-Items';
+import { Main_EquipSubmenu } from './Main-Equip';
+import { Main_ExitSubmenu } from './Main-Exit';
 
-            constructor() {
-                super({
-                    className: 'menu main-menu',
-                    cancelable: true,
-                    html: `
-                        <div class="main-area">
-                        </div>
+export class Main extends RPG.Menu {
+    statusPanel:Main_StatusPanel = null;
+    submenus:{ [key:string]:any };
 
-                        <div class="right-column">
-                            <ul class="selections">
-                                <li data-menu="resume">Resume</li>
-                                <li data-menu="items">Items</li>
-                                <li data-menu="equip">Equip</li>
-                                <li data-menu="save">Save</li>
-                                <li data-menu="exit">Exit</li>
-                            </ul>
+    constructor() {
+        super({
+            className: 'menu main-menu',
+            cancelable: true,
+            html: `
+                <div class="main-area">
+                </div>
 
-                            <div class="overview">
-                                <div class="money-container"><span class="money"></span></div>
-                            </div>
-                        </div>
-                    `
-                });
+                <div class="right-column">
+                    <ul class="selections">
+                        <li data-menu="resume">Resume</li>
+                        <li data-menu="items">Items</li>
+                        <li data-menu="equip">Equip</li>
+                        <li data-menu="save">Save</li>
+                        <li data-menu="exit">Exit</li>
+                    </ul>
 
-                var moneyField = this.find('span.money');
-                moneyField.innerHTML = RPG.Party.money.toString() + RPG.moneyName;
+                    <div class="overview">
+                        <div class="money-container"><span class="money"></span></div>
+                    </div>
+                </div>
+            `
+        });
 
-                this.submenus = {
-                    items: Main_ItemsSubmenu,
-                    equip: Main_EquipSubmenu,
-                    save: Main_SaveSubmenu,
-                    exit: Main_ExitSubmenu
-                };
+        var moneyField = this.find('span.money');
+        moneyField.innerHTML = RPG.Party.money.toString() + RPG.moneyName;
 
-                this.statusPanel = new Main_StatusPanel();
-                this.addChild(this.statusPanel, '.main-area');
-                this.setupSelections(this.find('.selections'));
-            }
+        this.submenus = {
+            items: Main_ItemsSubmenu,
+            equip: Main_EquipSubmenu,
+            save: Main_SaveSubmenu,
+            exit: Main_ExitSubmenu
+        };
 
-            pause() {
-                super.pause();
-                this.statusPanel.remove();
-            }
+        this.statusPanel = new Main_StatusPanel();
+        this.addChild(this.statusPanel, '.main-area');
+        this.setupSelections(this.find('.selections'));
+    }
 
-            unpause() {
-                super.unpause();
-                this.addChild(this.statusPanel, '.main-area');
-                this.statusPanel.updateFields();
-            }
+    pause() {
+        super.pause();
+        this.statusPanel.remove();
+    }
 
-            stop() {
-                super.stop();
-                this.remove();
-            }
+    unpause() {
+        super.unpause();
+        this.addChild(this.statusPanel, '.main-area');
+        this.statusPanel.updateFields();
+    }
 
-            showSubmenu(key) {
-                if (this.submenus[key]) {
-                    RPG.Menu.push(new this.submenus[key]());
-                    this.addChild(RPG.Menu.currentMenu, '.main-area');
-                } else {
-                    console.warn("! Tried to show bad submenu", key);
-                    console.trace();
-                }
-            }
+    stop() {
+        super.stop();
+        this.remove();
+    }
 
-            resume() { RPG.Menu.pop(); }
-            items() { this.showSubmenu('items'); }
-            equip() { this.showSubmenu('equip'); }
-            save() { this.showSubmenu('save'); }
-            exit() { this.showSubmenu('exit'); }
+    showSubmenu(key) {
+        if (this.submenus[key]) {
+            RPG.Menu.push(new this.submenus[key]());
+            this.addChild(RPG.Menu.currentMenu, '.main-area');
+        } else {
+            console.warn("! Tried to show bad submenu", key);
+            console.trace();
         }
     }
+
+    resume() { RPG.Menu.pop(); }
+    items() { this.showSubmenu('items'); }
+    equip() { this.showSubmenu('equip'); }
+    save() { this.showSubmenu('save'); }
+    exit() { this.showSubmenu('exit'); }
 }

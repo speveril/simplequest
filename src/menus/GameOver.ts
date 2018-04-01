@@ -1,34 +1,35 @@
-module SimpleQuest {
-    export module Menu {
-        export class GameOver extends RPG.Menu {
-            closing:boolean = false;
+import * as Cozy from 'Cozy';
+import * as RPG from '../../../lotus/core/Lotus';
 
-            constructor() {
-                super({
-                    className: 'menu gameover-menu',
-                    html: `
-                        <h1>Game Over</h1>
-                        <ul class="main selections">
-                            <li data-menu="mainmenu">Back to Main Menu</li>
-                        </ul>
-                    `
-                });
+import { bootSequence } from '../main';
 
-                this.setupSelections(this.find('.selections'));
-            }
+export class GameOver extends RPG.Menu {
+    closing:boolean = false;
 
-            mainmenu() {
-                if (this.closing) return false;
+    constructor() {
+        super({
+            className: 'menu gameover-menu',
+            html: `
+                <h1>Game Over</h1>
+                <ul class="main selections">
+                    <li data-menu="mainmenu">Back to Main Menu</li>
+                </ul>
+            `
+        });
 
-                this.closing = true;
-                RPG.Scene.do(function*() {
-                    yield* RPG.Scene.waitFadeTo("black", 1.0);
-                    RPG.Menu.pop();
-                    this.remove();
-                    SimpleQuest.bootSequence();
-                    yield 1;
-                }.bind(this))
-            }
-        }
+        this.setupSelections(this.find('.selections'));
+    }
+
+    mainmenu() {
+        if (this.closing) return false;
+
+        this.closing = true;
+        RPG.Scene.do(function*() {
+            yield* RPG.Scene.waitFadeTo("black", 1.0);
+            RPG.Menu.pop();
+            this.remove();
+            bootSequence();
+            yield 1;
+        }.bind(this))
     }
 }

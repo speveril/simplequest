@@ -1,103 +1,102 @@
-///<reference path="ItemComponent.ts"/>
+import * as RPG from '../../../lotus/core/Lotus';
 
-module SimpleQuest {
-    export module Menu {
-        export class Main_EquipItemsSubmenu extends RPG.Menu {
-            character:RPG.Character;
-            firstFixScroll:boolean = false;
-            chooseCB:any;
-            filterCB:any;
-            items:Array<Array<RPG.Item>>;
+import { ItemComponent } from './ItemComponent';
+import { Main_EquipSubmenu } from './Main-Equip';
 
-            constructor(args:any) {
-                super({
-                    cancelable: true,
-                    className: 'scrollable items-submenu layout-column',
-                    html: `
-                        <ul class="items selections scrollable"></ul>
-                    `
-                });
-                this.character = args.character;
-            }
+export class Main_EquipItemsSubmenu extends RPG.Menu {
+    character:RPG.Character;
+    firstFixScroll:boolean = false;
+    chooseCB:any;
+    filterCB:any;
+    items:Array<Array<RPG.Item>>;
 
-            selectItem(item:RPG.Item) {
-                var index = _.findIndex(this.items, (stack:Array<RPG.Item>) => {
-                    return _.indexOf(stack, item) !== -1;
-                });
-                this.setSelection(index < 0 ? 0 : index);
-            }
+    constructor(args:any) {
+        super({
+            cancelable: true,
+            className: 'scrollable items-submenu layout-column',
+            html: `
+                <ul class="items selections scrollable"></ul>
+            `
+        });
+        this.character = args.character;
+    }
 
-            setChooseCallback(chooseCB:any) {
-                this.chooseCB = chooseCB;
-            }
+    selectItem(item:RPG.Item) {
+        var index = this.items.findIndex((stack:Array<RPG.Item>) => {
+            return stack.indexOf(item) !== -1;
+        });
+        this.setSelection(index < 0 ? 0 : index);
+    }
 
-            setFilter(filterCB:any) {
-                this.filterCB = filterCB;
-                this.rerenderItemList();
-            }
+    setChooseCallback(chooseCB:any) {
+        this.chooseCB = chooseCB;
+    }
 
-            stop() {
-                super.stop();
-                this.remove();
-                (<Main_EquipSubmenu>this.parent).clearPreview();
-            }
+    setFilter(filterCB:any) {
+        this.filterCB = filterCB;
+        this.rerenderItemList();
+    }
 
-            rerenderItemList() {
-                var listContainer = this.find('ul.items');
-                while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
+    stop() {
+        super.stop();
+        this.remove();
+        (<Main_EquipSubmenu>this.parent).clearPreview();
+    }
 
-                var resetSelection = this.selectionIndex || 0;
+    rerenderItemList() {
+        var listContainer = this.find('ul.items');
+        while(listContainer.firstChild) { listContainer.removeChild(listContainer.lastChild); }
 
-                this.items = RPG.Party.inventory.stacked(this.filterCB);
-                this.items.forEach((stack:Array<RPG.Item>, index:number) => {
-                    var el = this.addChild(new ItemComponent({
-                        icon: stack[0].iconHTML,
-                        name: stack[0].name,
-                        count: stack.length
-                    }), listContainer);
+        var resetSelection = this.selectionIndex || 0;
 
-                    var equippable = _.findIndex(stack, (item) => item.canEquip(this.character, item.equipSlot)) !== -1;
+        this.items = RPG.Party.inventory.stacked(this.filterCB);
+        this.items.forEach((stack:Array<RPG.Item>, index:number) => {
+            var el = this.addChild(new ItemComponent({
+                icon: stack[0].iconHTML,
+                name: stack[0].name,
+                count: stack.length
+            }), listContainer);
 
-                    el.element.setAttribute('data-menu', equippable ? 'choose' : '@disabled');
-                });
+            var equippable = stack.findIndex((item) => item.canEquip(this.character, item.equipSlot)) !== -1;
 
-                this.selections = [];
-                this.setupSelections(listContainer);
-                this.selectionIndex = 0; //Math.min(this.selections.length - 1, resetSelection);
-            }
+            el.element.setAttribute('data-menu', equippable ? 'choose' : '@disabled');
+        });
 
-            setSelection(index:number) {
-                super.setSelection(index);
+        this.selections = [];
+        this.setupSelections(listContainer);
+        this.selectionIndex = 0; //Math.min(this.selections.length - 1, resetSelection);
+    }
 
-                if (this.selections.length < 1) return false;
-                if (!this.firstFixScroll) this.fixScroll();
+    setSelection(index:number) {
+        super.setSelection(index);
 
-                (<Main_EquipSubmenu>this.parent).updatePreview(this.items[this.selectionIndex][0]);
+        if (this.selections.length < 1) return false;
+        if (!this.firstFixScroll) this.fixScroll();
 
-                return true;
-            }
+        (<Main_EquipSubmenu>this.parent).updatePreview(this.items[this.selectionIndex][0]);
 
-            fixScroll() {
-                super.fixScroll();
+        return true;
+    }
 
-                if (document.contains(this.element)) {
-                    this.firstFixScroll = true;
-                    var itemsRow = this.find('.items');
-                    var st = this.selectionContainer.scrollTop;
-                    var sh = this.selectionContainer.scrollHeight;
-                    var ch = this.selectionContainer.clientHeight;
+    fixScroll() {
+        super.fixScroll();
 
-                    if (ch < sh) {
-                        st > 0 ? itemsRow.classList.add('can-scroll-up') : itemsRow.classList.remove('can-scroll-up');
-                        st < sh - ch ? itemsRow.classList.add('can-scroll-down') : itemsRow.classList.remove('can-scroll-down');
-                    }
-                }
-            }
+        if (document.contains(this.element)) {
+            this.firstFixScroll = true;
+            var itemsRow = this.find('.items');
+            var st = this.selectionContainer.scrollTop;
+            var sh = this.selectionContainer.scrollHeight;
+            var ch = this.selectionContainer.clientHeight;
 
-            choose(element:HTMLElement) {
-                var stack = this.items[this.selectionIndex];
-                this.chooseCB(_.find(stack, (item) => item.canEquip(this.character, item.equipSlot)));
+            if (ch < sh) {
+                st > 0 ? itemsRow.classList.add('can-scroll-up') : itemsRow.classList.remove('can-scroll-up');
+                st < sh - ch ? itemsRow.classList.add('can-scroll-down') : itemsRow.classList.remove('can-scroll-down');
             }
         }
+    }
+
+    choose(element:HTMLElement) {
+        var stack = this.items[this.selectionIndex];
+        this.chooseCB(stack.find((item) => item.canEquip(this.character, item.equipSlot)));
     }
 }
