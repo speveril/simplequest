@@ -407,7 +407,7 @@ export class GameMap extends RPG.GameMap {
 
                     if (itemkey === '#money') {
                         RPG.Party.money += count;
-                        yield* this.waitCenteredTextbox(`Found ${count} ${RPG.moneyName}!`);
+                        yield* this.waitCenteredTextbox(`Found ${count} ${RPG.getMoneyName()}!`);
                     } else {
                         var items = RPG.Party.inventory.add(itemkey, count);
 

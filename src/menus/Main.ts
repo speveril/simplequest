@@ -36,7 +36,7 @@ export class Main extends RPG.Menu {
         });
 
         var moneyField = this.find('span.money');
-        moneyField.innerHTML = RPG.Party.money.toString() + RPG.moneyName;
+        moneyField.innerHTML = RPG.Party.money.toString() + RPG.getMoneyName();
 
         this.submenus = {
             items: Main_ItemsSubmenu,

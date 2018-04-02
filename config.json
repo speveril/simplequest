@@ -18,6 +18,8 @@
     "userdata": "Simple Quest",
 
     "fullscreen": false,
+    "integerUpscale": true,
+    "autoResize": true,
     "volume": {
         "sfx": 0.3,
         "music": 0.7

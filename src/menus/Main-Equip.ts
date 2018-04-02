@@ -140,7 +140,7 @@ export class Main_EquipSubmenu extends RPG.Menu {
 
             this.itemMenu.selectItem(this.character.equipped[this.selectedSlot]);
         } else {
-            RPG.sfx['menu_bad'].play();
+            RPG.getSFX('menu_bad').play();
             return false;
         }
     }

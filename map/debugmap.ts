@@ -85,7 +85,7 @@ export class Map_Debug extends GameMap {
         RPG.Scene.do(function*() {
             var choice = yield *this.waitChoice("View ending credits?", {yes:"Yes", no:"No"});
             if (choice === 'yes') {
-                RPG.music['victory'].start();
+                RPG.getMusic('victory').start();
                 gameWinSequence()
             }
         }.bind(this));
@@ -95,19 +95,19 @@ export class Map_Debug extends GameMap {
         RPG.Scene.do(function*() {
             var choice = yield* this.waitChoice(`Playing '${this.musicKey}'.`, {change:'Change track...', 'cancel':'Leave it'});
             if (choice === 'change') {
-                let musicKeys = Object.keys(RPG.music);
+                let musicKeys = RPG.getMusicKeys();
                 this.musicKey = musicKeys[yield* this.waitChoice("Select track...", musicKeys)];
-                RPG.music[this.musicKey].start();
+                RPG.getMusic(this.musicKey).start();
             }
         }.bind(this));
     }
 
     music_prev(args) {
         RPG.Scene.do(function*() {
-            var musicKeys = Object.keys(RPG.music);
+            var musicKeys = RPG.getMusicKeys();
             var index = Cozy.wrap(musicKeys.indexOf(this.musicKey) - 1, musicKeys.length);
             this.musicKey = musicKeys[index];
-            RPG.music[this.musicKey].start();
+            RPG.getMusic(this.musicKey).start();
             yield* RPG.Scene.waitTextbox(null, [
                 `<center>Now playing:\n${this.musicKey}</center>`
             ]);
@@ -116,10 +116,10 @@ export class Map_Debug extends GameMap {
 
     music_next(args) {
         RPG.Scene.do(function*() {
-            var musicKeys = Object.keys(RPG.music);
+            var musicKeys = RPG.getMusicKeys();
             var index = Cozy.wrap(musicKeys.indexOf(this.musicKey) + 1, musicKeys.length);
             this.musicKey = musicKeys[index];
-            RPG.music[this.musicKey].start();
+            RPG.getMusic(this.musicKey).start();
             yield* RPG.Scene.waitTextbox(null, [
                 `<center>Now playing:\n${this.musicKey}</center>`
             ]);

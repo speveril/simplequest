@@ -10,7 +10,7 @@ export class ItemComponent extends Cozy.UiComponent {
                 <span class="item-icon">${args.icon}</span>
                 <span class="name">${args.name}</span>
                 <span class="count">${args.count}</span>
-                <span class="price">${args.price}${RPG.moneyName}</span>
+                <span class="price">${args.price}${RPG.getMoneyName()}</span>
             `
         });
 
@@ -19,7 +19,7 @@ export class ItemComponent extends Cozy.UiComponent {
     }
 
     setPrice(n:number):void {
-        this.find('.price').innerText = n.toString() + RPG.moneyName;
+        this.find('.price').innerText = n.toString() + RPG.getMoneyName();
     }
 
     setCount(n:number):void {

@@ -127,7 +127,7 @@ export class Map_Forest extends GameMap {
                 yield* RPG.Scene.waitTextbox("Cultist", ["Master, I just want it to be clear I had nothing to do with any of this!"]);
 
                 cultLeader.emote("!");
-                RPG.sfx['alert'].play();
+                RPG.getSFX('alert').play();
                 cultLeader.bounce(8);
                 yield *RPG.Scene.waitTime(1);
                 cultLeader.clearEmote();

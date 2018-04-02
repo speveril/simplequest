@@ -36,7 +36,7 @@ export class Boot extends RPG.Menu {
     beginGame(gameData:RPG.SavedGame) {
         this.pause();
         RPG.Scene.do(function*() {
-            RPG.sfx['menu_newgame'].play();
+            RPG.getSFX('menu_newgame').play();
             yield* RPG.Scene.waitFadeOut(1.0);
             RPG.Menu.pop();
             this.remove();
@@ -71,7 +71,7 @@ export class Boot extends RPG.Menu {
             this.element.style.display = 'none';
             yield *waitOnCredits();
             this.element.style.display = '';
-            RPG.music['overworld'].start();
+            RPG.getMusic('overworld').start();
             this.unpause();
         }.bind(this));
     }

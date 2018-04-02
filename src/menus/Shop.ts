@@ -19,7 +19,7 @@ export class ShopMenu extends RPG.Menu {
                         <li data-menu="buy">Buy</li>
                         <li class="sell" data-menu="sell">Sell</li>
                         <li data-menu="resume">Leave</li>
-                        <li class="money">${RPG.Party.money}${RPG.moneyName}</li>
+                        <li class="money">${RPG.Party.money}${RPG.getMoneyName()}</li>
                     </ul>
                     <div class="items-container"></div>
                     <div class="description"></div>
@@ -62,7 +62,7 @@ export class ShopMenu extends RPG.Menu {
     }
 
     updateMoney() {
-        this.find('.money').innerHTML = `${RPG.Party.money}${RPG.moneyName}`;
+        this.find('.money').innerHTML = `${RPG.Party.money}${RPG.getMoneyName()}`;
     }
 
     updateDescription(desc) {
@@ -278,7 +278,7 @@ class ConfirmSellMenu extends RPG.Menu {
         countSpan.classList.toggle('ceil', this.count_ === this.owned - this.equipped);
 
         var totalSpan = this.find('.total-container .total');
-        totalSpan.innerText = (this.price * this.count_).toString() + RPG.moneyName;
+        totalSpan.innerText = (this.price * this.count_).toString() + RPG.getMoneyName();
     }
 
     get owned():number { return this.owned_; }
