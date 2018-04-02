@@ -3,17 +3,15 @@ import * as RPG from '../../lotus/core/Lotus';
 
 import * as Menu from './menus/all';
 import { System as SoloFrontView } from '../../lotus/core/battle/SoloFrontView/System';
+import { CreditsComponent } from './CreditsComponent';
 
-// /<reference path="Map.ts"/>
-// /<reference path="CreditsComponent.ts"/>
-
-// /<reference path="../map/boss.ts"/>
-// /<reference path="../map/castle.ts"/>
-// /<reference path="../map/cave.ts"/>
-// /<reference path="../map/debugmap.ts"/>
-// /<reference path="../map/forest.ts"/>
-// /<reference path="../map/town.ts"/>
-// /<reference path="../map/overworld.ts"/>
+import { Map_Boss } from '../map/boss';
+import { Map_Castle } from '../map/castle';
+import { Map_Cave } from '../map/cave';
+import { Map_Debug } from '../map/debugmap';
+import { Map_Forest } from '../map/forest';
+import { Map_Town } from '../map/town';
+import { Map_Overworld } from '../map/overworld';
 
 window['RPG'] = RPG;
 
@@ -57,16 +55,16 @@ export function load() {
             'effect_heal':          'audio/sfx/magic-cure1.mp3'
         },
         music: {
-            'village':              { tracks: ["audio/music/1-01 Town of Wishes.ogg"] },
-            'overworld':            { tracks: ["audio/music/Death Is Just Another Path.ogg"] },
-            'forest':               { tracks: ["audio/music/2-05 Mellow Darkness.ogg"] },
-            'castle':               { tracks: ["audio/music/1-12 The Ritual.ogg"] },
-            'cave':                 { tracks: ["audio/music/1-10 Brazen.ogg"] },
-            'boss':                 { tracks: ["audio/music/3-11 Royalty of Sin.ogg"] },
-            'battle':               { tracks: ["audio/music/1-02 Resonant Hopes Ignited Wills.ogg"] },
-            'victory':              { tracks: ["audio/music/2-12 Victory Theme.ogg"] },
-            'lose':                 { tracks: ["audio/music/old city theme.ogg" ] },
-            'endcredits':           { tracks: ["audio/music/Snowfall (Looped ver.).ogg"] }
+            'village':              "audio/music/1-01 Town of Wishes.ogg",
+            'overworld':            "audio/music/Death Is Just Another Path.ogg",
+            'forest':               "audio/music/2-05 Mellow Darkness.ogg",
+            'castle':               "audio/music/1-12 The Ritual.ogg",
+            'cave':                 "audio/music/1-10 Brazen.ogg",
+            'boss':                 "audio/music/3-11 Royalty of Sin.ogg",
+            'battle':               "audio/music/1-02 Resonant Hopes Ignited Wills.ogg",
+            'victory':              "audio/music/2-12 Victory Theme.ogg",
+            'lose':                 "audio/music/old city theme.ogg",
+            'endcredits':           "audio/music/Snowfall (Looped ver.).ogg"
         },
         maps: {
             'overworld':            [ Map_Overworld ],
@@ -93,10 +91,10 @@ export function start() {
 
 export function bootSequence() {
     RPG.cleanup();
-    RPG.music['overworld'].start();
+    RPG.getMusic('overworld').start();
 
     var bootMenu = new Menu.Boot();
-    RPG.uiPlane.addChild(bootMenu);
+    RPG.getUiPlane().addChild(bootMenu);
     RPG.Menu.push(bootMenu);
 
     Cozy.unpause();
@@ -115,8 +113,8 @@ export function startGame(game:RPG.SavedGame) {
 }
 
 export function newGameSequence() {
-    let lyr = RPG.renderPlane.addRenderLayer();
-    let sprite = new Cozy.Sprite(RPG.characters['hero'].sprite);
+    let lyr = RPG.getRenderPlane().addRenderLayer();
+    let sprite = new Cozy.Sprite(RPG.getCharacter('hero').sprite);
     lyr.add(sprite);
     sprite.setPosition(160, 120)
     sprite.direction = 90;
@@ -140,13 +138,13 @@ export function gameOverSequence() {
     RPG.ControlStack.cleanup();
     RPG.ControlStack.push(RPG.ControlMode.Map);
     RPG.Scene.cleanup();
-    RPG.uiPlane.clear();
+    RPG.getUiPlane().clear();
 
     let gameOverMenu = new Menu.GameOver();
-    RPG.uiPlane.addChild(gameOverMenu);
+    RPG.getUiPlane().addChild(gameOverMenu);
     RPG.Scene.do(function*() {
         console.log("GAME OVER");
-        RPG.music['lose'].start(2.0);
+        RPG.getMusic('lose').start(2.0);
         yield *RPG.Scene.waitFadeIn(2.0);
         RPG.Menu.push(gameOverMenu);
         while (!gameOverMenu.done) {
@@ -159,13 +157,13 @@ export function gameWinSequence() {
     RPG.Scene.do(function*() {
         yield *RPG.Scene.waitFadeOut(1.0);
 
-        RPG.map.finish();
-        RPG.map = null;
-        RPG.renderPlane.clear();
-        RPG.player = null;
+        RPG.getMap().finish();
+        RPG.clearMap();
+        RPG.getRenderPlane().clear();
+        RPG.setPlayer(null);
 
-        const lyr = RPG.renderPlane.addRenderLayer();
-        const sprite = new Cozy.Sprite(RPG.characters['hero'].sprite);
+        const lyr = RPG.getRenderPlane().addRenderLayer();
+        const sprite = new Cozy.Sprite(RPG.getCharacter('hero').sprite);
         lyr.add(sprite);
         sprite.setPosition(160, 120)
         sprite.direction = 90;
@@ -198,13 +196,13 @@ export function gameWinSequence() {
 }
 
 export function *waitOnCredits() {
-    RPG.renderPlane.clear();
+    RPG.getRenderPlane().clear();
 
     let y = 0;
     const creditScroll = new CreditsComponent();
-    RPG.uiPlane.addChild(creditScroll);
+    RPG.getUiPlane().addChild(creditScroll);
 
-    RPG.music['endcredits'].start();
+    RPG.getMusic('endcredits').start();
     yield *RPG.Scene.waitFadeIn(1.0);
 
     let hold = 0;
@@ -225,7 +223,7 @@ export function *waitOnCredits() {
         if (hold > 2) break;
     }
 
-    RPG.music['endcredits'].stop(2);
+    RPG.getMusic('endcredits').stop(2);
     yield *RPG.Scene.waitFadeOut(2.0);
     creditScroll.remove();
 }

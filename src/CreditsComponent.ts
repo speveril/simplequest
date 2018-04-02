@@ -1,13 +1,14 @@
-module SimpleQuest {
-    export class CreditsComponent extends Cozy.UiComponent {
-        public scrolled:number;
-        private scroller:HTMLElement;
-        private holdIndicator:HTMLElement;
+import * as Cozy from 'Cozy';
 
-        constructor() {
-            super({
-                className: 'credits',
-                html: `
+export class CreditsComponent extends Cozy.UiComponent {
+    public scrolled:number;
+    private scroller:HTMLElement;
+    private holdIndicator:HTMLElement;
+
+    constructor() {
+        super({
+            className: 'credits',
+            html: `
 <meter class="hold-indicator"></meter>
 <div class="scroller">
     <div>
@@ -97,31 +98,30 @@ module SimpleQuest {
         </ul>
     </div>
 </div>
-                `
-            });
+            `
+        });
 
-            this.scrolled = -this.element.clientHeight;
-            this.scroller = this.find('.scroller');
-            this.holdIndicator = this.find('.hold-indicator');
-        }
+        this.scrolled = -this.element.clientHeight;
+        this.scroller = this.find('.scroller');
+        this.holdIndicator = this.find('.hold-indicator');
+    }
 
-        getScrollLength() {
-            return this.scroller.scrollHeight - this.scroller.clientHeight;
-        }
+    getScrollLength() {
+        return this.scroller.scrollHeight - this.scroller.clientHeight;
+    }
 
-        scroll(dy) {
-            this.scrolled += dy;
-            this.scroller.scrollTop = this.scrolled | 0;
-        }
+    scroll(dy) {
+        this.scrolled += dy;
+        this.scroller.scrollTop = this.scrolled | 0;
+    }
 
 
-        setHoldLevel(x:number) {
-            this.holdIndicator.setAttribute('value', x.toString());
-            if (x > 0) {
-                this.holdIndicator.classList.add('visible');
-            } else {
-                this.holdIndicator.classList.remove('visible');
-            }
+    setHoldLevel(x:number) {
+        this.holdIndicator.setAttribute('value', x.toString());
+        if (x > 0) {
+            this.holdIndicator.classList.add('visible');
+        } else {
+            this.holdIndicator.classList.remove('visible');
         }
     }
 }

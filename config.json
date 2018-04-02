@@ -6,7 +6,7 @@
     "main": "src/main.ts",
     "width": 320,
     "height": 240,
-    "css": [ "**/*.css" ],
+    "css": [ "**/*.css", "../lotus/core/**/*.css" ],
     "export": {
         "executable": "SimpleQuest",
         "copyright": "(c) 2017 Shamus Peveril and others, see README.txt for more information",
