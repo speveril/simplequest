@@ -20,7 +20,12 @@ export class GameMap extends RPG.GameMap {
         super.open();
 
         if (!RPG.GameMap.persistent[this.filename]) {
-            RPG.GameMap.persistent[this.filename] = {};
+            RPG.GameMap.persistent[this.filename] = {
+                smashedPots: [],
+                openedChests: [],
+                completedFights: [],
+                onetimeFights: []
+            };
         }
 
         // _.each(RPG.GameMap.persistent[this.filename].smashedPots, function(coords) {
