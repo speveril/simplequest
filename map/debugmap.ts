@@ -1,7 +1,7 @@
 import * as Cozy from 'Cozy';
 import * as RPG from '../../lotus/core/Lotus';
 import { GameMap } from '../src/Map';
-import { gameWinSequence } from '../main';
+import { gameWinSequence } from '../src/main';
 
 export class Map_Debug extends GameMap {
     private musicKey:string;
