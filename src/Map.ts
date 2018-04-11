@@ -21,33 +21,34 @@ export class GameMap extends RPG.GameMap {
 
         if (!RPG.GameMap.persistent[this.filename]) {
             RPG.GameMap.persistent[this.filename] = {
-                smashedPots: [],
                 openedChests: [],
                 completedFights: [],
                 onetimeFights: []
             };
         }
 
-        // _.each(RPG.GameMap.persistent[this.filename].smashedPots, function(coords) {
-        for (let coords of RPG.GameMap.persistent[this.filename].smashedPots) {
-            var tx = coords[0], ty = coords[1];
-            // _.each(this.layers, function(lyr:RPG.GameMap.MapLayer, i) {
-            for (let lyr of this.layers) {
-                var t = lyr.getTile(tx, ty);
-                if (t == 53) {
-                    lyr.setTile(tx, ty, t + 3);
-                }
+        if (RPG.GameMap.persistent[this.filename].smashedPots) {
+            // _.each(RPG.GameMap.persistent[this.filename].smashedPots, function(coords) {
+            for (let coords of RPG.GameMap.persistent[this.filename].smashedPots) {
+                var tx = coords[0], ty = coords[1];
+                // _.each(this.layers, function(lyr:RPG.GameMap.MapLayer, i) {
+                for (let lyr of this.layers) {
+                    var t = lyr.getTile(tx, ty);
+                    if (t == 53) {
+                        lyr.setTile(tx, ty, t + 3);
+                    }
 
-                var tr = lyr.getTriggerByPoint((tx + 0.5) * this.tileSize.x, (ty + 0.5) * this.tileSize.y);
-                if (tr && tr.name === 'smash_pot') {
-                    tr.solid = false;
-                    tr.active = false;
+                    var tr = lyr.getTriggerByPoint((tx + 0.5) * this.tileSize.x, (ty + 0.5) * this.tileSize.y);
+                    if (tr && tr.name === 'smash_pot') {
+                        tr.solid = false;
+                        tr.active = false;
+                    }
                 }
+                // }.bind(this));
             }
             // }.bind(this));
         }
-        // }.bind(this));
-
+        
         // _.each(RPG.GameMap.persistent[this.filename].openedChests, function(coords) {
         for (let coords of RPG.GameMap.persistent[this.filename].openedChests) {
             var tx = coords[0], ty = coords[1];
