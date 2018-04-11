@@ -86,6 +86,7 @@ export function load() {
 }
 
 export function start() {
+    RPG.GameMap.debugRender = false;
     bootSequence();
 }
 
