@@ -28,7 +28,7 @@
     margin-bottom: 0.25em;
 }
 
-.boot-load-menu, .boot-options-menu {
+.boot-menu .boot-load-menu, .boot-menu .menu.boot-options-menu {
     width: 255px;
     height: 238px;
     position: absolute;
