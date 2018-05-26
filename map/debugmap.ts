@@ -1,5 +1,5 @@
 import * as Cozy from 'Cozy';
-import * as RPG from '../../lotus/core/Lotus';
+import * as RPG from 'Lotus';
 import { GameMap } from '../src/Map';
 import { gameWinSequence } from '../src/main';
 

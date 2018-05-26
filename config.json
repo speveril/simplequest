@@ -6,10 +6,13 @@
     "main": "src/main.ts",
     "width": 320,
     "height": 240,
-    "css": [ "**/*.css", "../lotus/core/**/*.css" ],
+    "css": [ "**/*.css" ],
+    "lib": {
+        "Lotus": "../lotus/core/" 
+    },
     "export": {
         "executable": "SimpleQuest",
-        "copyright": "(c) 2017 Shamus Peveril and others, see README.txt for more information",
+        "copyright": "(c) 2017-2018 Shamus Peveril and others, see README.txt for more information",
         "exclude": [
             "src_image.*",
             "no_ship.*"

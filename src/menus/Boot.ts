@@ -1,5 +1,5 @@
 import * as Cozy from 'Cozy';
-import * as RPG from '../../../lotus/core/Lotus';
+import * as RPG from 'Lotus';
 
 import { quitGame } from './all'
 import { Boot_Load } from './Boot-Load';

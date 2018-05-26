@@ -1,4 +1,4 @@
-import * as RPG from '../../lotus/core/Lotus';
+import * as RPG from 'Lotus';
 import { GameMap } from '../src/Map';
 
 export class Map_Town extends GameMap {

@@ -1,5 +1,5 @@
 import * as Cozy from 'Cozy';
-import * as RPG from '../../../lotus/core/Lotus';
+import * as RPG from 'Lotus';
 import { Main_EquipSlot } from './Main-Equip-Slot';
 
 export class Main_PartyMember extends Cozy.UiComponent {

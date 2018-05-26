@@ -1,5 +1,5 @@
 import * as Cozy from 'Cozy';
-import * as RPG from '../../lotus/core/Lotus';
+import * as RPG from 'Lotus';
 import { GameMap } from '../src/Map';
 
 export class Map_Cave extends GameMap {
