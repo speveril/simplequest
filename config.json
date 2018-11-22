@@ -14,8 +14,8 @@
         "executable": "SimpleQuest",
         "copyright": "(c) 2017-2018 Shamus Peveril and others, see README.txt for more information",
         "exclude": [
-            "src_image.*",
-            "no_ship.*"
+            "src_image\/.*",
+            "no_ship\/.*"
         ]
     },
     "userdata": "Simple Quest",
