@@ -1,4 +1,4 @@
-import * as RPG from 'Lotus';
+import * as RPG from 'rpg';
 
 import { ItemComponent } from './ItemComponent';
 import { Main_EquipSubmenu } from './Main-Equip';

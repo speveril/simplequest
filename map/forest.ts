@@ -1,4 +1,4 @@
-import * as RPG from 'Lotus';
+import * as RPG from 'rpg';
 import { GameMap } from '../src/Map';
 
 export class Map_Forest extends GameMap {

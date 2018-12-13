@@ -1,5 +1,5 @@
 import * as Cozy from 'Cozy';
-import * as RPG from 'Lotus';
+import * as RPG from 'rpg';
 
 import { Main_StatusPanel } from './Main-Status';
 import { Main_SaveSubmenu } from './Main-Save';

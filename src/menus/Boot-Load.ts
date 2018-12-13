@@ -1,5 +1,5 @@
 import * as Cozy from 'Cozy';
-import * as RPG from 'Lotus';
+import * as RPG from 'rpg';
 import { SavedGameComponent } from './SavedGameComponent';
 
 export class Boot_Load extends RPG.Menu {
@@ -18,20 +18,26 @@ export class Boot_Load extends RPG.Menu {
 
         this.choice = null;
 
-        var savedGames = RPG.SavedGame.getList();
+        const savedGames = RPG.SavedGame.getList();
+        const promises = [];
 
-        // _.each(savedGames, (game:RPG.SavedGame) => {
         for (let game of savedGames) {
-            this.addChild(new SavedGameComponent({
-                id: game.file.path,
-                img: game.data.image,
-                name: game.data.name,
-                time: game.file.stat().mtime.toLocaleString('en-GB')
-            }), 'ul.selections');
+            promises.push(
+                new Promise((resolve, reject) => {
+                    return game.file.stat();
+                })
+                .then((fstat:any) => { // TODO clean up :any
+                    this.addChild(new SavedGameComponent({
+                        id: game.file.path,
+                        img: game.data.image,
+                        name: game.data.name,
+                        time: fstat.mtime.toLocaleString('en-GB')
+                    }), 'ul.selections');
+                })
+            );
         }
-        // });
 
-        this.setupSelections(this.find('ul.selections'));
+        Promise.all(promises).then(() => this.setupSelections(this.find('ul.selections')));
     }
 
     stop() {

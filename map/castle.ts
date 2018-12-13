@@ -1,5 +1,5 @@
 import * as Cozy from 'Cozy';
-import * as RPG from 'Lotus';
+import * as RPG from 'rpg';
 import { GameMap } from '../src/Map';
 
 export class Map_Castle extends GameMap {

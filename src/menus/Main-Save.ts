@@ -1,5 +1,5 @@
 import * as Cozy from 'Cozy';
-import * as RPG from 'Lotus';
+import * as RPG from 'rpg';
 
 import { SavedGameComponent } from './SavedGameComponent';
 
@@ -15,8 +15,6 @@ export class Main_SaveSubmenu extends RPG.Menu {
             `
         });
 
-        var savedGames = RPG.SavedGame.getList();
-
         this.addChild(new SavedGameComponent({
             id: '@new',
             img: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', // transparent 1 pixel gif
@@ -24,18 +22,26 @@ export class Main_SaveSubmenu extends RPG.Menu {
             time: '-'
         }), 'ul.selections');
 
-        // _.each(savedGames, (game:RPG.SavedGame) => {
-        for (let game of savedGames) {
-            this.addChild(new SavedGameComponent({
-                id: game.file.path,
-                img: game.data.image,
-                name: game.data.name,
-                time: game.file.stat().mtime.toLocaleString('en-GB')
-            }), 'ul.selections');
-        }
-        // });
+        const savedGames = RPG.SavedGame.getList();
+        const promises = [];
 
-        this.setupSelections(this.find('ul.selections'));
+        for (let game of savedGames) {
+            promises.push(
+                new Promise((resolve, reject) => {
+                    return game.file.stat();
+                })
+                .then((fstat:any) => { // TODO clean up :any
+                    this.addChild(new SavedGameComponent({
+                        id: game.file.path,
+                        img: game.data.image,
+                        name: game.data.name,
+                        time: fstat.mtime.toLocaleString('en-GB')
+                    }), 'ul.selections');
+                })
+            );
+        }
+
+        Promise.all(promises).then(() => this.setupSelections(this.find('ul.selections')));
     }
 
     stop() {
@@ -44,11 +50,11 @@ export class Main_SaveSubmenu extends RPG.Menu {
     }
 
     choose(e) {
-        var confirmation = this.find('.confirm');
+        const confirmation = this.find('.confirm');
         if (confirmation) {
             RPG.SavedGame.fromState()
                 .then((saveGame) => {
-                    var filename = e.getAttribute('data-id');
+                    const filename = e.getAttribute('data-id');
                     if (filename !== '@new') saveGame.file = new Cozy.File(filename);
                     saveGame.writeToDisk();
                     // TODO tell the player it worked
@@ -60,13 +66,13 @@ export class Main_SaveSubmenu extends RPG.Menu {
     }
 
     cancel() {
-        var confirmation = this.find('.confirm');
+        const confirmation = this.find('.confirm');
         if (!confirmation) return super.cancel();
         confirmation.classList.remove('confirm');
     }
 
     setSelection(index) {
-        var confirmation = this.find('.confirm');
+        const confirmation = this.find('.confirm');
         if (!confirmation) return super.setSelection(index);
         return false;
     }

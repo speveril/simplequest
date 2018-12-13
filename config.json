@@ -7,9 +7,7 @@
     "width": 320,
     "height": 240,
     "css": [ "**/*.css" ],
-    "lib": {
-        "Lotus": "../lotus/core/" 
-    },
+    "lib": [ "rpg" ],
     "export": {
         "executable": "SimpleQuest",
         "copyright": "(c) 2017-2018 Shamus Peveril and others, see README.txt for more information",

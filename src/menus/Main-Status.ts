@@ -1,5 +1,5 @@
 import * as Cozy from 'Cozy';
-import * as RPG from 'Lotus';
+import * as RPG from 'rpg';
 import { Main_PartyMember } from './Main-Status-PartyMember';
 
 export class Main_StatusPanel extends Cozy.UiComponent {
