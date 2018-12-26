@@ -32,7 +32,6 @@ export class Main_SaveSubmenu extends RPG.Menu {
                 })
                 .then((fstat:any) => { // TODO clean up :any
                     this.addChild(new SavedGameComponent({
-                        id: game.file.path,
                         img: game.data.image,
                         name: game.data.name,
                         time: fstat.mtime.toLocaleString('en-GB')
@@ -55,7 +54,7 @@ export class Main_SaveSubmenu extends RPG.Menu {
             RPG.SavedGame.fromState()
                 .then((saveGame) => {
                     const filename = e.getAttribute('data-id');
-                    if (filename !== '@new') saveGame.file = new Cozy.File(filename);
+                    if (filename !== '@new') saveGame.file = new Cozy.UserdataFile(filename);
                     saveGame.writeToDisk();
                     // TODO tell the player it worked
                     RPG.Menu.pop();

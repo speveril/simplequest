@@ -16,71 +16,76 @@ window['RPG'] = RPG;
 
 export var frame = RPG.frame;
 export function load() {
-    return RPG.load({
-        mainMenuClass:          Menu.Main,
-        battleSystem:           RPG.Battle.systems.SoloFrontView,
-        battleSystemConfig: {
-            fightMusic:             'battle',
-            // fightSound:             'battle_start',
-            victoryMusic:           'victory',
-            monsters:               Cozy.gameDir().file('src/monsters.json').read('json'),
-            gameOver:               this.gameOverSequence
-        },
-        loadSkip:               [ "src_image/" ],
-        items:                  Cozy.gameDir().file('src/items.json').read('json'),
-        sfx: {
-            'hit':                  "audio/sfx/smash.wav",
-            'restore':              "audio/sfx/Healing Full.wav",
-            'thud':                 "audio/sfx/thud.wav",
-            'chnk':                 "audio/sfx/chnk.ogg",
-            'negative':             "audio/sfx/ALERT_Error.wav",
-            'alert':                "audio/sfx/sfx_alarm_loop6.wav",
-
-            'menu_move':            'audio/sfx/MENU_Pick.wav',
-            'menu_choose':          'audio/sfx/MENU B_Select.wav',
-            'menu_bad':             'audio/sfx/MENU B_Back.wav',
-            'menu_newgame':         'audio/sfx/MENU A_Select.wav',
-
-            'dragon_roar':          'audio/sfx/dinosaur_roar.wav',
-
-            'battle_playerhit':     'audio/sfx/sword-slash3.mp3',
-            'battle_playerweakhit': 'audio/sfx/sword-clash1.mp3',
-            'battle_playermiss':    'audio/sfx/sword-gesture2.mp3',
-
-            'effect_fire':          'audio/sfx/magic-flame1.mp3',
-            'effect_ice':           'audio/sfx/magic-ice2.mp3',
-            'effect_lightning':     'audio/sfx/magic-electron2.mp3',
-            'effect_force':         'audio/sfx/qigong1.mp3',
-            'effect_heal':          'audio/sfx/magic-cure1.mp3'
-        },
-        music: {
-            'village':              "audio/music/1-01 Town of Wishes.ogg",
-            'overworld':            "audio/music/Death Is Just Another Path.ogg",
-            'forest':               "audio/music/2-05 Mellow Darkness.ogg",
-            'castle':               "audio/music/1-12 The Ritual.ogg",
-            'cave':                 "audio/music/1-10 Brazen.ogg",
-            'boss':                 "audio/music/3-11 Royalty of Sin.ogg",
-            'battle':               "audio/music/1-02 Resonant Hopes Ignited Wills.ogg",
-            'victory':              "audio/music/2-12 Victory Theme.ogg",
-            'lose':                 "audio/music/old city theme.ogg",
-            'endcredits':           "audio/music/Snowfall (Looped ver.).ogg"
-        },
-        maps: {
-            'overworld':            [ Map_Overworld ],
-            'village':              [ Map_Town ],
-            'forest':               [ Map_Forest ],
-            'castle':               [ Map_Castle ],
-            'cave':                 [ Map_Cave ],
-            'boss':                 [ Map_Boss ],
-            'debug':                [ Map_Debug ]
-        },
-        menuConfig: {
+    return Promise.all([
+        Cozy.gameDir().file('src/monsters.json').load(),
+        Cozy.gameDir().file('src/items.json').load(),
+    ]).then(() => {
+        return Promise.all(RPG.load({
+            mainMenuClass:          Menu.Main,
+            battleSystem:           RPG.BattleSystems.SoloFrontView,
+            battleSystemConfig: {
+                fightMusic:             'battle',
+                // fightSound:             'battle_start',
+                victoryMusic:           'victory',
+                monsters:               Cozy.gameDir().file('src/monsters.json').getData('json'),
+                gameOver:               this.gameOverSequence
+            },
+            loadSkip:               [ "src_image/" ],
+            items:                  Cozy.gameDir().file('src/items.json').getData('json'),
             sfx: {
-                blip:       'menu_move',
-                choose:     'menu_choose',
-                sfxBad:     'menu_bad'
+                'hit':                  "audio/sfx/smash.wav",
+                'restore':              "audio/sfx/Healing Full.wav",
+                'thud':                 "audio/sfx/thud.wav",
+                'chnk':                 "audio/sfx/chnk.ogg",
+                'negative':             "audio/sfx/ALERT_Error.wav",
+                'alert':                "audio/sfx/sfx_alarm_loop6.wav",
+
+                'menu_move':            'audio/sfx/MENU_Pick.wav',
+                'menu_choose':          'audio/sfx/MENU B_Select.wav',
+                'menu_bad':             'audio/sfx/MENU B_Back.wav',
+                'menu_newgame':         'audio/sfx/MENU A_Select.wav',
+
+                'dragon_roar':          'audio/sfx/dinosaur_roar.wav',
+
+                'battle_playerhit':     'audio/sfx/sword-slash3.mp3',
+                'battle_playerweakhit': 'audio/sfx/sword-clash1.mp3',
+                'battle_playermiss':    'audio/sfx/sword-gesture2.mp3',
+
+                'effect_fire':          'audio/sfx/magic-flame1.mp3',
+                'effect_ice':           'audio/sfx/magic-ice2.mp3',
+                'effect_lightning':     'audio/sfx/magic-electron2.mp3',
+                'effect_force':         'audio/sfx/qigong1.mp3',
+                'effect_heal':          'audio/sfx/magic-cure1.mp3'
+            },
+            music: {
+                'village':              "audio/music/1-01 Town of Wishes.ogg",
+                'overworld':            "audio/music/Death Is Just Another Path.ogg",
+                'forest':               "audio/music/2-05 Mellow Darkness.ogg",
+                'castle':               "audio/music/1-12 The Ritual.ogg",
+                'cave':                 "audio/music/1-10 Brazen.ogg",
+                'boss':                 "audio/music/3-11 Royalty of Sin.ogg",
+                'battle':               "audio/music/1-02 Resonant Hopes Ignited Wills.ogg",
+                'victory':              "audio/music/2-12 Victory Theme.ogg",
+                'lose':                 "audio/music/old city theme.ogg",
+                'endcredits':           "audio/music/Snowfall (Looped ver.).ogg"
+            },
+            maps: {
+                'overworld':            [ Map_Overworld ],
+                'village':              [ Map_Town ],
+                'forest':               [ Map_Forest ],
+                'castle':               [ Map_Castle ],
+                'cave':                 [ Map_Cave ],
+                'boss':                 [ Map_Boss ],
+                'debug':                [ Map_Debug ]
+            },
+            menuConfig: {
+                sfx: {
+                    blip:       'menu_move',
+                    choose:     'menu_choose',
+                    sfxBad:     'menu_bad'
+                }
             }
-        }
+        }));
     });
 }
 

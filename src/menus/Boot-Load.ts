@@ -28,7 +28,6 @@ export class Boot_Load extends RPG.Menu {
                 })
                 .then((fstat:any) => { // TODO clean up :any
                     this.addChild(new SavedGameComponent({
-                        id: game.file.path,
                         img: game.data.image,
                         name: game.data.name,
                         time: fstat.mtime.toLocaleString('en-GB')
