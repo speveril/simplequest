@@ -4,8 +4,17 @@ import * as RPG from 'rpg';
 import { ShopMenu } from './menus/Shop';
 
 export class GameMap extends RPG.GameMap {
+    public static musicName:string = '';
+    public static battleScene:string = 'ui/battle/scene_placeholder.png';
+
     public music:Cozy.Music;
-    public battleScene:string;
+
+    constructor() {
+        super({});
+        if (this.constructor['musicName']) {
+            this.music = RPG.getMusic(this.constructor['musicName']);
+        }
+    }
 
     persisted(k):any {
         return RPG.GameMap.persistent[this.filename][k];
@@ -98,7 +107,7 @@ export class GameMap extends RPG.GameMap {
     *waitFight(entity, options?:any) {
         var opts = options ? options : {};
 
-        var scene = this.battleScene || 'ui/battle/scene_placeholder.png';
+        var scene = this.constructor['battleScene'] || 'ui/battle/scene_placeholder.png';
 
         let result = yield *RPG.Battle.waitBattle({
             enemy: entity.params.monster,

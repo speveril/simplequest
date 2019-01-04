@@ -3,6 +3,7 @@ import * as RPG from 'rpg';
 import { SavedGameComponent } from './SavedGameComponent';
 
 export class Boot_Load extends RPG.Menu {
+    private savedGames:RPG.SavedGame[];
     choice:RPG.SavedGame;
 
     constructor() {
@@ -18,25 +19,20 @@ export class Boot_Load extends RPG.Menu {
 
         this.choice = null;
 
-        const savedGames = RPG.SavedGame.getList();
-        const promises = [];
-
-        for (let game of savedGames) {
-            promises.push(
-                new Promise((resolve, reject) => {
-                    return game.file.stat();
-                })
-                .then((fstat:any) => { // TODO clean up :any
+        RPG.SavedGame.getList()
+            .then((games) => {
+                this.savedGames = games;
+                for (let game of games) {
+                    let fstat = game.file.stat();
                     this.addChild(new SavedGameComponent({
                         img: game.data.image,
                         name: game.data.name,
                         time: fstat.mtime.toLocaleString('en-GB')
                     }), 'ul.selections');
-                })
-            );
-        }
-
-        Promise.all(promises).then(() => this.setupSelections(this.find('ul.selections')));
+                }
+        
+                this.setupSelections(this.find('ul.selections'));
+            });
     }
 
     stop() {
@@ -45,7 +41,8 @@ export class Boot_Load extends RPG.Menu {
     }
 
     choose() {
-        this.choice = RPG.SavedGame.getList()[this.selectionIndex];
+        this.choice = this.savedGames[this.selectionIndex];
+        console.log("CHOOSE>", this.choice);
         RPG.Menu.pop();
     }
 }

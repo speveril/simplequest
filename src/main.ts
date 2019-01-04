@@ -16,10 +16,12 @@ window['RPG'] = RPG;
 
 export var frame = RPG.frame;
 export function load() {
-    return Promise.all([
+    let preloadpromises = [
         Cozy.gameDir().file('src/monsters.json').load(),
         Cozy.gameDir().file('src/items.json').load(),
-    ]).then(() => {
+    ];
+
+    return Promise.all(preloadpromises).then(() => {
         return Promise.all(RPG.load({
             mainMenuClass:          Menu.Main,
             battleSystem:           RPG.BattleSystems.SoloFrontView,
@@ -78,6 +80,12 @@ export function load() {
                 'boss':                 [ Map_Boss ],
                 'debug':                [ Map_Debug ]
             },
+            sprites: Cozy.gameDir().glob("sprites/*.sprite").reduce((o, f) => {
+                if (f instanceof Cozy.File) {
+                    o[f.relativePath(Cozy.gameDir())] = f;
+                }
+                return o;
+            }, {}),
             menuConfig: {
                 sfx: {
                     blip:       'menu_move',
@@ -119,7 +127,7 @@ export function startGame(game:RPG.SavedGame) {
 
 export function newGameSequence() {
     let lyr = RPG.getRenderPlane().addRenderLayer();
-    let sprite = new Cozy.Sprite(RPG.getCharacter('hero').sprite);
+    const sprite = new Cozy.Sprite(Cozy.gameDir().file(RPG.getCharacter('hero').sprite).getData('json'));
     lyr.add(sprite);
     sprite.setPosition(160, 120)
     sprite.direction = 90;
@@ -168,7 +176,7 @@ export function gameWinSequence() {
         RPG.setPlayer(null);
 
         const lyr = RPG.getRenderPlane().addRenderLayer();
-        const sprite = new Cozy.Sprite(RPG.getCharacter('hero').sprite);
+        const sprite = new Cozy.Sprite(Cozy.gameDir().file(RPG.getCharacter('hero').sprite));
         lyr.add(sprite);
         sprite.setPosition(160, 120)
         sprite.direction = 90;

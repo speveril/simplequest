@@ -1,11 +1,10 @@
+import * as Cozy from 'Cozy';
 import * as RPG from 'rpg';
 import { GameMap } from '../src/Map';
 
 export class Map_Town extends GameMap {
-    constructor() {
-        super('map/town.tmx');
-        this.music = RPG.getMusic('village');
-    }
+    public static mapFile:string = 'map/town.tmx';
+    public static musicName:string = 'village';
 
     exit_town(args) {
         if (!this.persisted('talked to mayor')) {

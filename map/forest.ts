@@ -1,12 +1,11 @@
+import * as Cozy from 'Cozy';
 import * as RPG from 'rpg';
 import { GameMap } from '../src/Map';
 
 export class Map_Forest extends GameMap {
-    constructor() {
-        super('map/forest.tmx');
-        this.music = RPG.getMusic('forest');
-        this.battleScene = 'ui/battle/scene_forest.png';
-    }
+    public static mapFile:string = 'map/forest.tmx';
+    public static musicName:string = 'forest';
+    public static battleScene:string = 'ui/battle/scene_forest.png';
 
     open() {
         super.open();

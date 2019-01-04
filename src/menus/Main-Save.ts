@@ -22,25 +22,18 @@ export class Main_SaveSubmenu extends RPG.Menu {
             time: '-'
         }), 'ul.selections');
 
-        const savedGames = RPG.SavedGame.getList();
-        const promises = [];
-
-        for (let game of savedGames) {
-            promises.push(
-                new Promise((resolve, reject) => {
-                    return game.file.stat();
-                })
-                .then((fstat:any) => { // TODO clean up :any
+        RPG.SavedGame.getList()
+            .then((games) => {
+                for (let game of games) {
+                    let fstat = game.file.stat();
                     this.addChild(new SavedGameComponent({
                         img: game.data.image,
                         name: game.data.name,
                         time: fstat.mtime.toLocaleString('en-GB')
                     }), 'ul.selections');
-                })
-            );
-        }
-
-        Promise.all(promises).then(() => this.setupSelections(this.find('ul.selections')));
+                }
+                this.setupSelections(this.find('ul.selections'));
+            });
     }
 
     stop() {

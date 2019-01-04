@@ -3,11 +3,9 @@ import * as RPG from 'rpg';
 import { GameMap } from '../src/Map';
 
 export class Map_Castle extends GameMap {
-    constructor() {
-        super('map/castle.tmx');
-        this.music = RPG.getMusic('castle');
-        this.battleScene = 'ui/battle/scene_dungeon.png';
-    }
+    public static mapFile:string = 'map/castle.tmx';
+    public static musicName:string = 'castle';
+    public static battleScene:string = 'ui/battle/scene_dungeon.png';
 
     open() {
         super.open();

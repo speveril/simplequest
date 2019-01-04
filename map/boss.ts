@@ -4,6 +4,10 @@ import { GameMap } from '../src/Map';
 import { gameWinSequence } from '../src/main';
 
 export class Map_Boss extends GameMap {
+    public static mapFile:string = 'map/boss.tmx';
+    public static musicName:string = 'boss';
+    public static battleScene:string = 'ui/battle/scene_cave.png';
+
     torches:any;
     switches:any;
     sequence:any;
@@ -15,9 +19,7 @@ export class Map_Boss extends GameMap {
     spawnspots:Array<Array<number>>;
 
     constructor() {
-        super('map/boss.tmx');
-        this.music = RPG.getMusic('boss');
-        this.battleScene = 'ui/battle/scene_cave.png';
+        super();
 
         this.torchTiles = {
             none: 205,

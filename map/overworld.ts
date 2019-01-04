@@ -1,10 +1,16 @@
+import * as Cozy from 'Cozy';
 import * as RPG from 'rpg';
 import { GameMap } from '../src/Map';
 
 export class Map_Overworld extends GameMap {
-    constructor() {
-        super('map/overworld.tmx');
-        this.music = RPG.getMusic('overworld');
+    public static mapFile:string = 'map/overworld.tmx';
+    public static musicName:string = 'overworld';
+
+    public static preload() {
+        return Promise.all([
+            GameMap.preload.call(Map_Overworld),
+            Cozy.gameDir().file('map/tileset.tsx').load(), // all the maps use the same tileset; make sure it gets preloaded here
+        ]);
     }
 
     start() {
@@ -37,7 +43,7 @@ export class Map_Overworld extends GameMap {
 
     examine_ship(args) {
         RPG.Scene.do(function*() {
-            yield* RPG.Scene.waitTextbox(null, ["I can't leave yet."]);
+            yield* RPG.Scene.waitTextbox('Hero', ["I can't leave yet."]);
         }.bind(this));
     }
 }

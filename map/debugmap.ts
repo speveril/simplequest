@@ -4,13 +4,15 @@ import { GameMap } from '../src/Map';
 import { gameWinSequence } from '../src/main';
 
 export class Map_Debug extends GameMap {
+    public static mapFile:string = 'map/debugmap.tmx';
+    public static musicName:string = 'overworld';
+    public static battleScene:string = 'ui/battle/scene_dungeon.png';
+
     private musicKey:string;
 
     constructor() {
-        super('map/debugmap.tmx');
-        this.musicKey = 'overworld';
+        super();
         this.music = RPG.getMusic(this.musicKey);
-        this.battleScene = 'ui/battle/scene_dungeon.png';
     }
 
     open() {
