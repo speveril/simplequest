@@ -56,7 +56,10 @@ export class Boot extends RPG.Menu {
     }
 
     loadLast() {
-        this.beginGame(RPG.SavedGame.getList()[0]);
+        RPG.SavedGame.getList()
+            .then((games) => {
+                this.beginGame(games[0]);
+            });
     }
 
     loadGame() {

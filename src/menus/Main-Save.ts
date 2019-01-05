@@ -27,6 +27,7 @@ export class Main_SaveSubmenu extends RPG.Menu {
                 for (let game of games) {
                     let fstat = game.file.stat();
                     this.addChild(new SavedGameComponent({
+                        id: game.file.name,
                         img: game.data.image,
                         name: game.data.name,
                         time: fstat.mtime.toLocaleString('en-GB')

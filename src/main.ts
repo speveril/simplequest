@@ -176,7 +176,7 @@ export function gameWinSequence() {
         RPG.setPlayer(null);
 
         const lyr = RPG.getRenderPlane().addRenderLayer();
-        const sprite = new Cozy.Sprite(Cozy.gameDir().file(RPG.getCharacter('hero').sprite));
+        const sprite = new Cozy.Sprite(Cozy.gameDir().file(RPG.getCharacter('hero').sprite).getData('json'));
         lyr.add(sprite);
         sprite.setPosition(160, 120)
         sprite.direction = 90;

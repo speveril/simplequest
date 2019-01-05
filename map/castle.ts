@@ -9,6 +9,7 @@ export class Map_Castle extends GameMap {
 
     open() {
         super.open();
+        console.log(RPG.GameMap.persistent);
 
         this.fixSwitchDoor('trigger_green_castle_switch', 'green_door');
         this.fixSwitchDoor('trigger_red_castle_switch', 'red_door');

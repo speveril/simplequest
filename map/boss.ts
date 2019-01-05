@@ -220,7 +220,7 @@ export class Map_Boss extends GameMap {
     resetSwitches() {
         RPG.getSFX('chnk').play();
         // _.each(this.switches, (sw, color) => {
-        for (let color of this.switches) {
+        for (let color of Object.getOwnPropertyNames(this.switches)) {
             let sw = this.switches[color];
             this.layers[1].setTile(sw['tx'], sw['ty'], this.switchTiles[color]);
         }

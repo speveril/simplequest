@@ -58,17 +58,19 @@ export class GameMap extends RPG.GameMap {
             // }.bind(this));
         }
         
-        // _.each(RPG.GameMap.persistent[this.filename].openedChests, function(coords) {
-        for (let coords of RPG.GameMap.persistent[this.filename].openedChests) {
-            var tx = coords[0], ty = coords[1];
-            // _.each(this.layers, function(lyr:RPG.GameMap.MapLayer, i) {
-            for (let lyr of this.layers) {
-                var t = lyr.getTile(tx, ty);
-                if (t == 37) {
-                    lyr.setTile(tx, ty, t + 3);
+        if (this.persisted('openedChests')) {
+            // _.each(RPG.GameMap.persistent[this.filename].openedChests, function(coords) {
+            for (let coords of RPG.GameMap.persistent[this.filename].openedChests) {
+                var tx = coords[0], ty = coords[1];
+                // _.each(this.layers, function(lyr:RPG.GameMap.MapLayer, i) {
+                for (let lyr of this.layers) {
+                    var t = lyr.getTile(tx, ty);
+                    if (t == 37) {
+                        lyr.setTile(tx, ty, t + 3);
+                    }
                 }
+                // }.bind(this));
             }
-            // }.bind(this));
         }
         // }.bind(this));
 

@@ -23,6 +23,7 @@ export class SavedGameComponent extends Cozy.UiComponent {
         // on the length of a src URL? Anyway, setting the attribute directly
         // seems to work.
         this.find('.image img').setAttribute('src', args.img);
+        this.element.setAttribute('data-id', args.id);
         this.element.setAttribute('data-menu', 'choose');
     }
 }
