@@ -7,7 +7,7 @@ export class ItemComponent extends Cozy.UiComponent {
             tag: 'li',
             className: 'item',
             html: `
-                <span class="item-icon">${args.icon}</span>
+                ${args.icon}
                 <span class="name">${args.name}</span>
                 <span class="count">${args.count}</span>
                 <span class="price">${args.price}${RPG.getMoneyName()}</span>

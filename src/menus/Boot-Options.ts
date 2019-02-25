@@ -24,13 +24,14 @@ export class Boot_Options extends RPG.Menu {
                         <div class="label">Music Volume</div>
                         <div class="value"><meter max="100"></meter></div>
                     </li>
+                    ${Cozy.platform() !== 'web' ? `
                     <li class="fullscreen" data-menu="fullscreen">
                         <div class="label">Full Screen</div>
                         <div class="value">
                             <div class="indicator true">Yes</div>
                             <div class="indicator false">No</div>
                         </div>
-                    </li>
+                    </li>` : '' }
 
                     <li class="divider"></li>
 
@@ -50,14 +51,18 @@ export class Boot_Options extends RPG.Menu {
 
         this.savedSFXVolume = Cozy.Audio.sfxVolume;
         this.savedMusicVolume = Cozy.Audio.musicVolume;
-        this.savedFullScreen = Cozy.getFullScreen();
 
         if (Cozy.config['version']) {
             this.find('div.version').innerText = 'v.' + Cozy.config['version'];
         }
 
         this.updateMeters();
-        this.find('.fullscreen .value').classList.add(Cozy.getFullScreen().toString());
+
+        if (Cozy.platform() !== 'web') {
+            this.savedFullScreen = Cozy.getFullScreen();
+            this.find('.fullscreen .value').classList.add(Cozy.getFullScreen().toString());
+        }
+
         this.setupSelections(this.find('ul.selections'));
     }
 

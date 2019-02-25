@@ -13,7 +13,7 @@ export class Main_ExitSubmenu extends RPG.Menu {
                 <div class="title">Exit Game</div>
                 <ul class="selections">
                     <li data-menu="mainmenu">Quit to Main Menu</li>
-                    <li data-menu="desktop">Quit to Desktop</li>
+                    ${Cozy.platform() !== 'web' ? '<li data-menu="desktop">Quit to Desktop</li>' : ''}
                     <li data-menu="cancel">Cancel</li>
                 </ul>
                 <div class="note">Any progress since your last save will be lost.</div>

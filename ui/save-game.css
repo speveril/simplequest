@@ -6,7 +6,7 @@
 
 .boot-load-menu.menu ul.selections.active > li.saved-game.active::before,
 .save.menu ul.selections.active > li.saved-game.active::before {
-    left: 51px;
+    left: 36px;
     top: 3px;
     z-index: 1;
 }
@@ -52,6 +52,6 @@
 }
 
 .saved-game img {
-    width: 64px;
+    width: 48px;
     height: 36px;
 }

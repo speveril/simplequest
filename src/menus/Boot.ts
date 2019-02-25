@@ -20,7 +20,7 @@ export class Boot extends RPG.Menu {
                     <li class="load"      data-menu="loadGame">Load Game</li>
                     <li class="options"   data-menu="options">Options</li>
                     <li class="credits"   data-menu="credits">Credits</li>
-                    <li class="exit"      data-menu="exit">Exit</li>
+                    ${Cozy.platform() !== 'web' ? '<li class="exit"      data-menu="exit">Exit</li>' : ''}
                 </ul>
             `
         });
