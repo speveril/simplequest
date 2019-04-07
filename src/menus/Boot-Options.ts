@@ -115,7 +115,9 @@ export class Boot_Options extends RPG.Menu {
     cancel() {
         Cozy.Audio.setSFXVolume(this.savedSFXVolume);
         Cozy.Audio.setMusicVolume(this.savedMusicVolume);
-        Cozy.setFullScreen(this.savedFullScreen);
+        if (Cozy.platform() !== 'web') {
+            Cozy.setFullScreen(this.savedFullScreen);
+        }
         RPG.Menu.pop();
     }
 }
