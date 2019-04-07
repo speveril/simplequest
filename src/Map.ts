@@ -26,7 +26,7 @@ export class GameMap extends RPG.GameMap {
     }
 
     open() {
-        super.open();
+        super.open.apply(this, arguments);
 
         if (!RPG.GameMap.persistent[this.filename]) {
             RPG.GameMap.persistent[this.filename] = {
@@ -273,7 +273,7 @@ export class GameMap extends RPG.GameMap {
             RPG.Menu.pop();
         };
 
-        RPG.Textbox.show(topic);
+        RPG.Textbox.show(RPG.getUiPlane(), topic);
         RPG.Textbox.box.addChild(m, '.inner-text');
         RPG.Menu.push(m);
         while (!m.done) {
@@ -303,7 +303,7 @@ export class GameMap extends RPG.GameMap {
     }
 
     *waitCenteredTextbox(text:string) {
-        RPG.Textbox.show(`<div class="__c"><div class="__c_i">${text}</div></div>`);
+        RPG.Textbox.show(RPG.getUiPlane(), `<div class="__c"><div class="__c_i">${text}</div></div>`);
         yield* RPG.Scene.waitButton("confirm");
         Cozy.Input.debounce("confirm");
         RPG.Textbox.hide();
