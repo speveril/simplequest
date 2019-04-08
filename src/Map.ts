@@ -26,7 +26,7 @@ export class GameMap extends RPG.GameMap {
     }
 
     open() {
-        super.open.apply(this, arguments);
+        super.open(RPG.getRenderPlane(), RPG.getDebugPlane());
 
         if (!RPG.GameMap.persistent[this.filename]) {
             RPG.GameMap.persistent[this.filename] = {
