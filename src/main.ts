@@ -149,7 +149,7 @@ export function newGameSequence() {
 
 export function gameOverSequence() {
     RPG.ControlStack.cleanup();
-    RPG.ControlStack.push(RPG.ControlMode.Map);
+    RPG.ControlStack.push('map');
     RPG.Scene.cleanup();
     RPG.getUiPlane().clear();
 
